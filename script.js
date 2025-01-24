@@ -1,57 +1,85 @@
-const inputElement = document.getElementById("ip");
-const buttonElement = document.getElementById("btn");
-const outputElement = document.getElementById("output");
+const number = document.getElementById("ip");
+const btn = document.getElementById("btn");
+const output = document.getElementById("output");
 
-buttonElement.addEventListener("click", () => {
-  const inputValue = parseInt(inputElement.value);
-
-  if (isNaN(inputValue)) {
-    outputElement.textContent = "Please enter a valid number.";
-    return;
-  }
-
-  new Promise((resolve, reject) => {
+function getData() {
+  return new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve(inputValue);
+      const value = parseInt(number.value, 10);
+      if (!isNaN(value)) {
+        output.innerHTML = `Result: ${value}`;
+        resolve(value);
+      } else {
+        reject("Invalid input. Please enter a valid number.");
+      }
     }, 2000);
-  })
-    .then((number) => {
-      outputElement.textContent = `Result: ${number}`;
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(number * 2);
-        }, 1000);
-      });
+  });
+}
+
+function displayData(num) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      output.innerHTML = `Result: ${num}`;
+      resolve(num);
+    }, 2000);
+  });
+}
+
+function multiply(num) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const result = num * 2;
+      output.innerHTML = `Result: ${result}`;
+      resolve(result);
+    }, 1000);
+  });
+}
+
+function sub(num) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const result = num - 3;
+      output.innerHTML = `Result: ${result}`;
+      resolve(result);
+    }, 1000);
+  });
+}
+
+function divide(num) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const result = num / 2;
+      output.innerHTML = `Result: ${result}`;
+      resolve(result);
+    }, 1000);
+  });
+}
+
+function add(num) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const result = num + 10;
+      output.innerHTML = `Result: ${result}`;
+      resolve(result);
+    }, 1000);
+  });
+}
+
+const transFormData = (e) => {
+  e.preventDefault();
+  getData()
+    .then((res) => displayData(res))
+    .then((res) => multiply(res))
+    .then((res) => sub(res))
+    .then((res) => divide(res))
+    .then((res) => add(res))
+    .then((finalResult) => {
+      output.innerHTML = `Final Result: ${finalResult}`;
     })
-    .then((number) => {
-      outputElement.textContent = `Result: ${number}`;
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(number - 3);
-        }, 1000);
-      });
-    })
-    .then((number) => {
-      outputElement.textContent = `Result: ${number}`;
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(number / 2);
-        }, 1000);
-      });
-    })
-    .then((number) => {
-      outputElement.textContent = `Result: ${number}`;
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(number + 10);
-        }, 1000);
-      });
-    })
-    .then((finalNumber) => {
-      outputElement.textContent = `Final Result: ${finalNumber}`;
-    })
-    .catch((error) => {
-      outputElement.textContent = `Error: ${error.message}`;
+    .catch((err) => {
+      output.innerHTML = `Error: ${err}`;
     });
-});
+};
+
+btn.addEventListener("click", (e) => transFormData(e));
 
