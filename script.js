@@ -1,40 +1,57 @@
-function delay(ms, value) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(value);
-    }, ms);
-  });
-}
+const inputElement = document.getElementById("ip");
+const buttonElement = document.getElementById("btn");
+const outputElement = document.getElementById("output");
 
-document.getElementById("btn").addEventListener("click", () => {
-  const inputNumber = Number(document.getElementById("ip").value);
-  
-  delay(2000, inputNumber)
-    .then((result) => {
-      document.getElementById("output").textContent = `Result: ${result}`;
-      return delay(1000, result * 2);
+buttonElement.addEventListener("click", () => {
+  const inputValue = parseInt(inputElement.value);
+
+  if (isNaN(inputValue)) {
+    outputElement.textContent = "Please enter a valid number.";
+    return;
+  }
+
+  new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(inputValue);
+    }, 2000);
+  })
+    .then((number) => {
+      outputElement.textContent = `Result: ${number}`;
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(number * 2);
+        }, 1000);
+      });
     })
-    .then((result) => {
-      document.getElementById("output").textContent = `Result: ${result}`;
-      return delay(1000, result - 3);
+    .then((number) => {
+      outputElement.textContent = `Result: ${number}`;
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(number - 3);
+        }, 1000);
+      });
     })
-    .then((result) => {
-      document.getElementById("output").textContent = `Result: ${result}`;
-      return delay(1000, result / 2);
+    .then((number) => {
+      outputElement.textContent = `Result: ${number}`;
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(number / 2);
+        }, 1000);
+      });
     })
-    .then((result) => {
-      document.getElementById("output").textContent = `Result: ${result}`;
-      return delay(1000, result + 10);
+    .then((number) => {
+      outputElement.textContent = `Result: ${number}`;
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(number + 10);
+        }, 1000);
+      });
     })
-    .then((result) => {
-      document.getElementById("output").textContent = `Final Result: ${result}`;
+    .then((finalNumber) => {
+      outputElement.textContent = `Final Result: ${finalNumber}`;
     })
     .catch((error) => {
-      console.error("Error occurred:", error);
-      document.getElementById("output").textContent = "An error occurred!";
+      outputElement.textContent = `Error: ${error.message}`;
     });
 });
-
-
-
 
